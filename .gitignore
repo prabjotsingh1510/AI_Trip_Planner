@@ -1,0 +1,23 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+env/
+environ/
+
+# Environment variables
+.env
+*.env
+
+# Additional ignores
+*.log
+my_graph.png
+
+# Sensitive or Scratch Directories
+notebook/
