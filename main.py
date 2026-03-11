@@ -31,11 +31,13 @@ async def query_travel_agent(query:QueryRequest):
         if react_app is None:
             return JSONResponse(status_code=500, content={"error": "Failed to build graph"})
 
-        png_graph = react_app.get_graph().draw_mermaid_png()
-        with open("my_graph.png", "wb") as f:
-            f.write(png_graph)
-
-        print(f"Graph saved as 'my_graph.png' in {os.getcwd()}")
+        try:
+            png_graph = react_app.get_graph().draw_mermaid_png(max_retries=5, retry_delay=2.0)
+            with open("my_graph.png", "wb") as f:
+                f.write(png_graph)
+            print(f"Graph saved as 'my_graph.png' in {os.getcwd()}")
+        except Exception as e:
+            print(f"Running graph generation failed, skipping PNG saving: {e}")
         messages={"messages": [query.question]}
         output = react_app.invoke(messages)
 
