@@ -400,3 +400,8 @@ zipp==3.23.0
     # via importlib-metadata
 zstandard==0.25.0
     # via langsmith
+
+markdown-pdf
+plotly
+streamlit-folium
+folium
