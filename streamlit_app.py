@@ -166,6 +166,11 @@ def render_rec_card(item):
 
 def create_pdf_bytes(markdown_text):
     """Convert markdown string to a PDF byte stream."""
+    # Ensure the document starts with an H1 heading to prevent hierarchy level errors
+    # in the markdown-pdf library when it generates a Table of Contents (toc_level=2).
+    if not markdown_text.lstrip().startswith('# '):
+        markdown_text = "# AI Trip Planner Itinerary\n\n" + markdown_text
+        
     pdf = MarkdownPdf(toc_level=2)
     pdf.add_section(Section(markdown_text))
     
@@ -411,7 +416,9 @@ if st.session_state.trip_data and st.session_state.trip_markdown:
                     type="primary"
                 )
             except Exception as e:
-                st.warning(f"PDF generation failed. Fallback to base Markdown.")
+                import logging
+                logging.error(f"PDF generation failed: {e}", exc_info=True)
+                st.warning(f"PDF generation failed. Fallback to base Markdown. Error details: {str(e)}")
                 st.download_button(
                     label="📝 Download Plan",
                     data=st.session_state.trip_markdown,
